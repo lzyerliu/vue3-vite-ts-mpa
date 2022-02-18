@@ -1,0 +1,26 @@
+{
+  "compilerOptions": {
+    "target": "esnext",
+    "useDefineForClassFields": true,
+    "module": "esnext",
+    "moduleResolution": "node",
+    "strict": true,
+    "jsx": "preserve",
+    "sourceMap": true,
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
+    "lib": ["esnext", "dom"],
+    // "suppressImplicitAnyIndexErrors": true,
+    // "allowSyntheticDefaultImports": true,
+    // "types": ["vite/client"],
+    "removeComments": true,                     // 删除编译后的所有的注释
+    // "noEmit": true,                             // 不生成输出文件
+    // "skipLibCheck":true,
+    // "baseUrl": "src",
+    // "paths": {
+    //   "@/":["./*"]
+    // }
+  },
+  "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue"],
+  "references": [{ "path": "./tsconfig.node.json" }]
+}
