@@ -7,7 +7,7 @@
 vue@3.4.x + typescript@5.2.x + vite@5.x + (router@4.x + vuex@4.x + axios)
 
 ## 注意
-每个页面 必须要有main.ts 额入口文件
+每个页面 必须要有main.ts 入口文件
 
 ## Recommended IDE Setup
 
