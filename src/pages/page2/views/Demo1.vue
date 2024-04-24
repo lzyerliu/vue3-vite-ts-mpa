@@ -1,6 +1,6 @@
 <template>
   <div class="page-wrapper">
-    <span @click="callChildMethod">Demo1 Page</span>
+    <span @click="callChildMethod" class="p-title">Demo1 Page</span>
     <h3 @click="jumpRouter">{{$title}}</h3>
     <test-comp ref="testCompRef" name="form perent val" @emupdata="emupdataFn" />
   </div>
@@ -9,7 +9,7 @@
 <script setup lang="ts">
   import { ref, onBeforeMount, onMounted, watch, computed } from 'vue'
   import { useRouter } from 'vue-router'
-  import { useStore, mapState } from 'vuex'
+  import { useStore } from 'vuex'
   import TestComp from '@/pages/page2/components/TestComp.vue'
   import { testGetRes } from '@/pages/page2/api/testApi.ts'
 
@@ -54,9 +54,6 @@
       path: '/demo2',
       query: {
         id: '12312'
-      },
-      params: {
-        key: 'val'
       }
     })
   }
@@ -73,6 +70,9 @@
 
 </script>
 
-<style lang="less">
-
+<style lang="less" scoped>
+.p-title{
+  font-size: 48px;
+  font-weight: 600;
+}
 </style>

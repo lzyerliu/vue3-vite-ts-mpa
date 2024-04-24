@@ -15,16 +15,16 @@ const getUrlQueryParam = (name: string) => {
  * url中指定参数的值(含带hash)
  * @returns 
  */
- const getUrlVars = () => {
+const getUrlVars = () => {
   let vars: {[key: string]:any} = {}
-  let parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi,
+  window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi,
     // @ts-ignore
     function(m: any, key: string, value: string) {
       vars[key] = <string>value
     }
   );
   return vars
- }
+}
 
 export {
   getUrlQueryParam,

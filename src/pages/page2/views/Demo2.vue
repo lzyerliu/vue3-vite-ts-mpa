@@ -16,7 +16,7 @@
 
   onBeforeMount(() => {
     console.log('onBeforeMount! demo22222')
-    console.log($route.query, $route.params)
+    console.log($route.query)
   })
 
   onMounted(() => {

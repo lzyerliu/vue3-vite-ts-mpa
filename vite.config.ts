@@ -1,41 +1,46 @@
 import { defineConfig, loadEnv } from 'vite'
 import vue from '@vitejs/plugin-vue'
-import viteCompression from 'vite-plugin-compression'
+import viteComppression from 'vite-plugin-compression'
 import { resolve } from 'path'
-import glob from 'glob'
+import { globSync } from 'glob'
 import fs from 'fs'
 import autoprefixer from 'autoprefixer'
 import postcssPxToViewport from 'postcss-px-to-viewport'
 
+
 // get 多页面入口html文件, (入口文件目录需含main.ts;可更改自定义)
 const getEntryHtml = () => {
-  let entrys = {}
+  let entrys: any = {}
   // 遍历文件夹中含有main.ts的文件夹路径
-  const allEntry = glob.sync('./src/pages/**/main.ts')
+  const allEntry: any = globSync('./src/pages/**/main.ts')
   // console.log(allEntry)
   // 获取模版
-  const temp = fs.readFileSync('./index.html')
+  const temp: any = fs.readFileSync('./index.html')
   if(!fs.existsSync('./pages')) {
     fs.mkdirSync('./pages')
   }
   // 创建多页面模版
   allEntry.forEach((entry: string) => {
-    let pageArr = entry.split('/')
+    if (entry.indexOf('\\') >= 0) {
+      entry = entry.replace(/\\/g, '/')
+    }
+    let pageArr: any = []
+    pageArr = entry.split('/')
+    // console.log(pageArr)
     let name = pageArr[pageArr.length - 2]
     let htmlPath = ''
-    pageArr.map((el, index) => {
+    pageArr.map((el: any, index: any) => {
       if (index < pageArr.length - 1) {
         htmlPath += el + '/'
       }
       return el
     })
     htmlPath = `${htmlPath}${name}.html`
-    // console.log(htmlPath)
     // 优先取同级的html 入口文件
     if (fs.existsSync(htmlPath)) {
-      let tempHtml = fs.readFileSync(htmlPath)
-      let htmlContent = tempHtml.toString()
-      fs.writeFile(`./pages/${name}.html`, htmlContent, err => {
+      let tempHtml: any = fs.readFileSync(htmlPath)
+      let htmlContent: any = tempHtml.toString()
+      fs.writeFile(`./pages/${name}.html`, htmlContent, (err: any) => {
         if (err) {
           console.log(err)
         }
@@ -48,8 +53,8 @@ const getEntryHtml = () => {
       } catch (error) {
         console.log(`创建模版${name}.html文件`)
         let index = temp.toString().indexOf('</body>')
-        let content = temp.toString().slice(0, index) + `<script type="module" src=".${entry}"></script>` + temp.toString().slice(index)
-        fs.writeFile(`./pages/${name}.html`, content, err => {
+        let content = temp.toString().slice(0, index) + `<script type="module" src="/${entry}"></script>` + temp.toString().slice(index)
+        fs.writeFile(`./pages/${name}.html`, content, (err: any) => {
           if (err) {
             console.log(err)
           }
@@ -87,17 +92,18 @@ const getEnvFn = (mode: any, target: any) => {
 }
 
 // https://vitejs.dev/config/
-export default ({ mode }) => {
+export default (options: any) => {
+  // console.log(options)
 
-  // console.log(loadEnv(mode, process.cwd()))
-  const isProd = getEnvFn(mode, 'VITE_APP_ENV') === 'production'
-  const cdnHost = getEnvFn(mode, 'VITE_APP_CDN_HOST')
+  // console.log(loadEnv(options.mode, process.cwd()))
+  const isProd = getEnvFn(options.mode, 'VITE_APP_ENV') === 'prod'
+  const cdnHost = getEnvFn(options.mode, 'VITE_APP_CDN_HOST')
   console.log(isProd, cdnHost)
 
   return defineConfig({
     plugins: [
       vue(),
-      viteCompression(<Object>viteCompressionOptions)
+      viteComppression(<Object>viteCompressionOptions)
     ],
     resolve: {
       alias: {
@@ -122,17 +128,17 @@ export default ({ mode }) => {
       }
     },
     build: {
-      // target: 'es2015', // 默认modules
+      // target: 'es2015', // 默认 modules
       rollupOptions: {
         input: pageEntry,
         output: {
           dir: 'dist',
           chunkFileNames: 'assets/js/[name]-[hash].js',
           entryFileNames: 'assets/js/[name]-[hash].js',
-          assetFileNames: 'assets/[ext]/[name]-[hash].[ext]',
+          assetFileNames: 'assets/[ext]/[name]-[hash].[ext]'
         }
       },
-      // 生产环境移除console
+      // 生产环境移除 console
       terserOptions: {
         compress: {
           drop_console: isProd,
@@ -141,17 +147,17 @@ export default ({ mode }) => {
       }
     },
     server: {
-      port: 5656,
+      port: 6600,
       open: false,
       cors: true,
-      // proxy: {
-      //   '/api': {
-      //     target: '',
-      //     changeOrigin: true,
-      //     secure: false,
-      //     rewrite: path => path.replace('/api', '/')
-      //   }
-      // }
+      proxy: {
+        '/h5': {
+          target: 'http://test-api.xxxxxx.com',
+          changeOrigin: true,
+          secure: false,
+          rewrite: path => path.replace('/\/h5/', '')
+        },
+      }
     }
   })
 }
