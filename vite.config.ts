@@ -162,7 +162,7 @@ export default (options: any) => {
       cors: true,
       proxy: {
         '/h5': {
-          target: 'http://test-h5.chaojiyunshouji.com',
+          target: 'http://test-api.xxx.com',
           changeOrigin: true,
           secure: false,
           rewrite: (path: any) => path.replace('/\/h5/', '')
