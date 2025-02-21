@@ -13,9 +13,14 @@ dist-ssr
 *.local
 
 /pages
+/auto-imports.d.ts
+/components.d.ts
 /package-lock.json
 /yarn.lock
 # /pnpm-lock.yaml
+/tsconfig.node.tsbuildinfo
+/vite.config.d.ts
+/vite.config.js
 
 # Editor directories and files
 .vscode/*

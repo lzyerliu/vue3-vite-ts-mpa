@@ -1,6 +1,7 @@
 import axios, { AxiosInstance } from 'axios'
 
-console.log(import.meta.env.VITE_APP_HOST)
+// console.log(import.meta.env.VITE_APP_HOST)
+const baseHost: string = `/h5`
 
 const err = (err: any) => {
   console.log(err)
@@ -11,12 +12,13 @@ export class Interceptors {
   instance: AxiosInstance
   constructor() {
     this.instance = axios.create({
-      baseURL: import.meta.env.VITE_APP_HOST,
-      timeout: 60000, // 请求超时时间
+      baseURL: baseHost,
+      timeout: 5 * 60000, // 请求超时时间
       headers: {
         'X-Requested-With': 'XMLHttpRequest'
       }
     })
+    this.init()
   }
 
   // 初始化拦截器
@@ -27,8 +29,12 @@ export class Interceptors {
     }, err)
     // 相应拦截
     this.instance.interceptors.response.use(response => {
-      console.log(response)
-      return response
+      // console.log(response)
+      if (response.status == 200) {
+        return response.data
+      } else {
+        return Promise.reject(err)
+      }
     }, err)
   }
 

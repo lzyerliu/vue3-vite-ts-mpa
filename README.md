@@ -2,9 +2,9 @@
 
 移动端多页面项目
 
-# Vue 3 + Typescript + Vite 5 + vw
+# Vue 3 + Typescript + Vite 6 + vw
 
-vue@3.4.x + typescript@5.2.x + vite@5.x + (router@4.x + vuex@4.x + axios)
+vue@3.x + typescript@6.x + vite@5.x + (router@4.x + vuex@4.x + axios)
 
 ## 注意
 每个页面 必须要有main.ts 入口文件

@@ -6,6 +6,9 @@ import { globSync } from 'glob'
 import fs from 'fs'
 import autoprefixer from 'autoprefixer'
 import postcssPxToViewport from 'postcss-px-to-viewport'
+import AutoImport from 'unplugin-auto-import/vite'
+import Components from 'unplugin-vue-components/vite'
+import { VantResolver } from '@vant/auto-import-resolver'
 
 
 // get 多页面入口html文件, (入口文件目录需含main.ts;可更改自定义)
@@ -72,7 +75,7 @@ const pageEntry = getEntryHtml()
 // 压缩配置参数
 const viteCompressionOptions = {
   filter: /\.(js|css|json|txt|html|svg)(\?.*)?$/i, // 需要压缩的文件
-  threshold: 1024, // 文件容量大于这个值就压缩
+  threshold: 1024 * 10, // 文件容量大于这个值就压缩
   algorithm: 'gzip', // 压缩方式
   ext: 'gz', // 后缀名
   deleteOriginFile: false, // 验收是否删除源文件
@@ -103,7 +106,13 @@ export default (options: any) => {
   return defineConfig({
     plugins: [
       vue(),
-      viteComppression(<Object>viteCompressionOptions)
+      viteComppression(<Object>viteCompressionOptions),
+      AutoImport({
+        resolvers: [VantResolver()],
+      }),
+      Components({
+        resolvers: [VantResolver()],
+      }),
     ],
     resolve: {
       alias: {
@@ -120,9 +129,10 @@ export default (options: any) => {
             viewportHeight: 1334,           // (Number) The height of the viewport. 视窗的高度，根据750设备的宽度来指定，一般指定1334，也可以不配置
             unitPrecision: 3,               // (Number) The decimal numbers to allow the REM units to grow to. 指定`px`转换为视窗单位值的小数位数（很多时候无法整除）
             virwportUnit: 'vw',             // (String) Expected units. 指定需要转换成的视窗单位，建议使用vw
-            selectorBlackList: ['.ignore'], // (Array) The selectors to ignore and leave as px. 指定不转换为视窗单位的类，可以自定义，可以无限添加,建议定义一至两个通用的类名
+            selectorBlackList: ['.ignore', '.ignore-device-status', 'super-box-disclaimer-txt'], // (Array) The selectors to ignore and leave as px. 指定不转换为视窗单位的类，可以自定义，可以无限添加,建议定义一至两个通用的类名
             minPixelVlaue: 1,               // (Number) Set the minimum pixel value to replace. 小于或等于`1px`不转换为视窗单位，你也可以设置为你想要的值
             mediaQuery: false,              // (Boolean) Allow px to be converted in media queries. 允许在媒体查询中转换`px`
+            exclude: [/node_modules/]
           })
         ]
       }
@@ -147,15 +157,15 @@ export default (options: any) => {
       }
     },
     server: {
-      port: 6600,
+      port: 7700,
       open: false,
       cors: true,
       proxy: {
         '/h5': {
-          target: 'http://test-api.xxxxxx.com',
+          target: 'http://test-h5.chaojiyunshouji.com',
           changeOrigin: true,
           secure: false,
-          rewrite: path => path.replace('/\/h5/', '')
+          rewrite: (path: any) => path.replace('/\/h5/', '')
         },
       }
     }

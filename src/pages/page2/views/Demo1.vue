@@ -9,18 +9,13 @@
 <script setup lang="ts">
   import { ref, onBeforeMount, onMounted, watch, computed } from 'vue'
   import { useRouter } from 'vue-router'
-  import { useStore } from 'vuex'
   import TestComp from '@/pages/page2/components/TestComp.vue'
   import { testGetRes } from '@/pages/page2/api/testApi.ts'
-
+import { useUserStore } from '@/pages/page2/store/user.ts'
 
   const $router = useRouter()
-  const $store = useStore()
 
-  let userCountMore50 = computed(() => {
-    return $store.getters['user/getCountMore50']
-  })
-  // console.log(mapState(['user/count']))
+  const userStore = useUserStore()
 
   let $title: any = ref('Page1 Title')
   let $msg: any = ref('msg')
@@ -28,14 +23,12 @@
 
   onBeforeMount(() => {
     console.log('onBeforeMount! demo11111')
-    $store.dispatch('user/setCountAction', 85)
-    $store.dispatch('cart/setCountAction', 69)
   })
 
   onMounted(() => {
     console.log('onMounted! demo11111')
-    console.log($store.state, userCountMore50.value)
-    console.log($store.getters['user/getCountMore50'])
+    userStore.setToken('sdrwser')
+    console.log(userStore.token)
     testGetRes({
       id: 123
     })

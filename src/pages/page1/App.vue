@@ -1,6 +1,6 @@
 <template>
   <div class="page-wrapper">
-    <h4 class="title">{{title}}</h4>
+    <h4 class="title">{{ title }}</h4>
     <img src="@/assets/images/bg.png" alt="bg img">
   </div>
 </template>
