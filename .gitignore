@@ -13,12 +13,15 @@ dist-ssr
 *.local
 
 /pages
+types/auto-import.d.ts
+types/components.d.ts
 /auto-imports.d.ts
 /components.d.ts
 /package-lock.json
 /yarn.lock
 # /pnpm-lock.yaml
 /tsconfig.node.tsbuildinfo
+/tsconfig.tsbuildinfo
 /vite.config.d.ts
 /vite.config.js
 

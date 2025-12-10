@@ -4,11 +4,11 @@
   "version": "1.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite --mode dev",
+    "dev": "vue-tsc -b && vite --mode dev",
     "start": "npm run dev",
-    "build:test": "vite build --mode test",
-    "build:prod": "vite build --mode prod",
-    "build": "vue-tsc -b && vite build",
+    "build:test": "vue-tsc -b && vite build --mode test",
+    "build:prod": "vue-tsc -b && vite build --mode prod",
+    "build": "vite build",
     "preview": "vite preview"
   },
   "dependencies": {

@@ -7,11 +7,11 @@
 </template>
 
 <script setup lang="ts">
-  import { ref, onBeforeMount, onMounted, watch, computed } from 'vue'
+  import { ref, onBeforeMount, onMounted, watch } from 'vue'
   import { useRouter } from 'vue-router'
   import TestComp from '@/pages/page2/components/TestComp.vue'
-  import { testGetRes } from '@/pages/page2/api/testApi.ts'
-import { useUserStore } from '@/pages/page2/store/user.ts'
+  import { testGetRes } from '@/pages/page2/api/testApi'
+import { useUserStore } from '@/pages/page2/store/user'
 
   const $router = useRouter()
 

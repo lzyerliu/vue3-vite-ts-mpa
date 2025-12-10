@@ -39,10 +39,14 @@ const getEntryHtml = () => {
       return el
     })
     htmlPath = `${htmlPath}${name}.html`
+    console.log('path------', fs.existsSync(htmlPath))
     // 优先取同级的html 入口文件
     if (fs.existsSync(htmlPath)) {
       let tempHtml: any = fs.readFileSync(htmlPath)
       let htmlContent: any = tempHtml.toString()
+      if (htmlContent.includes('###mainsrc###')) {
+        htmlContent = htmlContent.replace(/###mainsrc###/g, `/${pageArr.join('/')}`)
+      }
       fs.writeFile(`./pages/${name}.html`, htmlContent, (err: any) => {
         if (err) {
           console.log(err)
@@ -54,7 +58,7 @@ const getEntryHtml = () => {
         // 判断文件是否存在
         fs.accessSync(`./pages/${name}.html`)
       } catch (error) {
-        console.log(`创建模版${name}.html文件`)
+        // console.log(`创建模版${name}.html文件`)
         let index = temp.toString().indexOf('</body>')
         let content = temp.toString().slice(0, index) + `<script type="module" src="/${entry}"></script>` + temp.toString().slice(index)
         fs.writeFile(`./pages/${name}.html`, content, (err: any) => {
@@ -109,9 +113,11 @@ export default (options: any) => {
       viteComppression(<Object>viteCompressionOptions),
       AutoImport({
         resolvers: [VantResolver()],
+        dts: 'types/auto-import.d.ts',
       }),
       Components({
         resolvers: [VantResolver()],
+        dts: 'types/components.d.ts',
       }),
     ],
     resolve: {
@@ -126,11 +132,10 @@ export default (options: any) => {
           autoprefixer(),
           postcssPxToViewport({
             viewportWidth: 750,             // (Number) The width of the viewport. 视窗的宽度，对应的是我们设计稿的宽度，一般是750
-            viewportHeight: 1334,           // (Number) The height of the viewport. 视窗的高度，根据750设备的宽度来指定，一般指定1334，也可以不配置
             unitPrecision: 3,               // (Number) The decimal numbers to allow the REM units to grow to. 指定`px`转换为视窗单位值的小数位数（很多时候无法整除）
             viewportUnit: 'vw',             // (String) Expected units. 指定需要转换成的视窗单位，建议使用vw
             selectorBlackList: ['.ignore', '.ignore-device-status'], // (Array) The selectors to ignore and leave as px. 指定不转换为视窗单位的类，可以自定义，可以无限添加,建议定义一至两个通用的类名
-            minPixelVlaue: 1,               // (Number) Set the minimum pixel value to replace. 小于或等于`1px`不转换为视窗单位，你也可以设置为你想要的值
+            minPixelValue: 1,               // (Number) Set the minimum pixel value to replace. 小于或等于`1px`不转换为视窗单位，你也可以设置为你想要的值
             mediaQuery: false,              // (Boolean) Allow px to be converted in media queries. 允许在媒体查询中转换`px`
             exclude: [/node_modules/]
           })

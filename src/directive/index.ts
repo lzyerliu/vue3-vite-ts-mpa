@@ -26,10 +26,10 @@
   app.mount('#app')
  */
 
-import copy from './copy.ts'
-import longpress from './longpress.ts'
-import debounce from './debounce.ts'
-import throttle from './throttle.ts'
+import copy from './copy'
+import longpress from './longpress'
+import debounce from './debounce'
+import throttle from './throttle'
 
 const directives: any = {
   copy,

@@ -1,4 +1,4 @@
-import http from '@/utils/service/axios.ts'
+import http from '@/utils/service/axios'
 
 const testGetRes = (params?: Object) => {
   return http.request({

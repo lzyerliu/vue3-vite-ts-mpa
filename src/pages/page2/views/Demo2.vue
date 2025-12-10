@@ -8,7 +8,7 @@
 <script setup lang="ts">
   import { onBeforeMount, onMounted } from 'vue'
   import { useRoute } from 'vue-router'
-  import { getUrlQueryParam, getUrlVars } from '@/utils/util.ts'
+  import { getUrlQueryParam, getUrlVars } from '@/utils/util'
 
   const $route = useRoute()
 
